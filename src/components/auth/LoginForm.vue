@@ -45,11 +45,11 @@ export default {
   },
   methods: {
     inicioSesion() {
-      console.log("Click en el boton de inici de sesión");
+      console.log("Click en el boton de inicio de sesión");
       console.log("Valor del email: " + this.emailValue);
 
       let endpointLogin = "/api/Usuarios/SignIn";
-      let user = { email: this.emailValue, password: this.pwdValue };
+      let user = { correo: this.emailValue, contraseña: this.pwdValue };
 
       this.$api
         .post(endpointLogin, user)
