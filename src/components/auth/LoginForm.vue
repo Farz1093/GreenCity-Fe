@@ -18,14 +18,22 @@
           />
           <q-input
             v-model="pwdValue"
-            standout="bg-teal text-white"
-            label="Password"
-            outlined
-            dense
-          />
+            filled
+            :type="isPwd ? 'password' : 'text'"
+            hint="Password"
+          >
+            <template v-slot:append>
+              <q-icon
+                :name="isPwd ? 'visibility_off' : 'visibility'"
+                class="cursor-pointer"
+                @click="isPwd = !isPwd"
+              />
+            </template>
+          </q-input>
         </q-card-section>
         <q-card-section>
           <q-btn label="Login" color="green" @click="inicioSesion" />
+          <q-btn label="Register" to="/register" />
         </q-card-section>
       </q-page>
     </q-page-container>
@@ -41,6 +49,7 @@ export default {
     return {
       emailValue: "",
       pwdValue: "",
+      isPwd: true,
     };
   },
   methods: {
