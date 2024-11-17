@@ -129,7 +129,6 @@ export default {
             timeout: 5000,
           });
 
-          // Redirigir a la página de inicio de sesión o a otra página
           this.$router.push("/login");
         })
         .catch((error) => {
