@@ -22,3 +22,5 @@ export default boot(({ app }) => {
 });
 
 export { api };
+
+// Estp es un comentario de prueba

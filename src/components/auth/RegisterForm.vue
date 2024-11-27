@@ -1,92 +1,68 @@
 <template>
-  <h4>Registro</h4>
-  <h5>GreenCity</h5>
+  <q-layout>
+    <q-page-container>
+      <q-page class="flex flex-center q-pa-md" style="height: 100vh; background-color: #f5f5f5">
+        <q-card class="q-pa-lg rounded shadow-2" style="width: 100%; max-width: 500px">
+          <!-- encabezado -->
+          <q-card-section class="text-center">
+            <q-avatar size="80px" class="bg-green text-white">
+              <q-icon name="person_add" size="40px" />
+            </q-avatar>
+            <h4 class="q-mb-xs">Create an Account</h4>
+            <p class="text-subtitle2 text-grey">Join GreenCity and get started</p>
+          </q-card-section>
 
-  <div class="q-pa-md" style="max-width: 400px">
-    <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
-      <q-input
-        filled
-        v-model="Namevalue"
-        label="Nombre*"
-        hint="Nombre"
-        lazy-rules
-        :rules="[
-          (val) => (val && val.length > 0) || 'Por favor, llenar este campo',
-        ]"
-      />
+          <!-- formulario de registro -->
+          <q-card-section>
+            <q-form @submit="onSubmit" @reset="onReset" class="">
+              <q-input outlined v-model="Namevalue" label="Name*" lazy-rules :rules="[
+                (val) => (val && val.length > 0) || 'Please fill out this field'
+              ]" class="" />
 
-      <q-input
-        filled
-        v-model="Emailvalue"
-        label="Correo electrónico*"
-        hint="email"
-        lazy-rules
-        :rules="[
-          (val) => (val && val.length > 0) || 'Por favor, llenar este campo',
-          (val) => {
-            const emailPattern =
-              /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-            return (
-              emailPattern.test(val) || 'Por favor, ingresa un correo válido'
-            );
-          },
-        ]"
-      />
+              <q-input outlined v-model="Emailvalue" label="Email*" lazy-rules :rules="[
+                (val) => (val && val.length > 0) || 'Please fill out this field',
+                (val) => {
+                  const emailPattern =
+                    /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+                  return (
+                    emailPattern.test(val) || 'Please enter a valid email'
+                  );
+                },
+              ]" class="" />
 
-      <q-input
-        filled
-        v-model="Passwordvalue"
-        label="Contraseña*"
-        hint="Contraseña"
-        lazy-rules
-        :rules="[
-          (val) => (val && val.length > 0) || 'Por favor, llenar este campo',
-        ]"
-      />
+              <q-input outlined v-model="Passwordvalue" label="Password*" type="password" lazy-rules :rules="[
+                (val) => (val && val.length > 0) || 'Please fill out this field'
+              ]" class="" />
 
-      <q-input
-        filled
-        v-model="Phonevalue"
-        label="Telefono*"
-        hint="Telefono"
-        lazy-rules
-        :rules="[
-          (val) => (val && val.length > 0) || 'Por favor, llenar este campo',
-        ]"
-      />
+              <q-input outlined v-model="Phonevalue" label="Phone*" lazy-rules :rules="[
+                (val) => (val && val.length > 0) || 'Please fill out this field'
+              ]" class="" />
 
-      <q-input
-        filled
-        v-model="Addressvalue"
-        label="Dirección*"
-        hint="Dirección"
-        lazy-rules
-        :rules="[
-          (val) => (val && val.length > 0) || 'Por favor, llenar este campo',
-        ]"
-      />
+              <q-input outlined v-model="Addressvalue" label="Address*" lazy-rules :rules="[
+                (val) => (val && val.length > 0) || 'Please fill out this field'
+              ]" class="" />
 
-      <div>
-        <q-btn
-          label="Registrar"
-          type="submit"
-          color="green"
-          @click="registroUsuario"
-        />
-        <q-btn
-          label="Limpiar"
-          type="reset"
-          color="green"
-          flat
-          class="q-ml-sm"
-          @click="limpiarFormulario"
-        />
-      </div>
-    </q-form>
-  </div>
+              <!-- botones -->
+              <div class="text-center">
+                <q-btn label="Register" type="submit" color="green" unelevated class="full-width q-mb-sm"
+                  @click="registroUsuario" />
+                <q-btn label="Clear" type="reset" color="grey" flat class="full-width" @click="limpiarFormulario" />
+              </div>
+            </q-form>
+          </q-card-section>
+
+          <!-- pie de pagina -->
+          <q-card-section class="text-center text-grey">
+            <p>
+              Already have an account?
+              <q-btn label="Login here" flat dense color="green" to="/login" />
+            </p>
+          </q-card-section>
+        </q-card>
+      </q-page>
+    </q-page-container>
+  </q-layout>
 </template>
-
-<style></style>
 
 <script>
 export default {
@@ -120,7 +96,6 @@ export default {
       this.$api
         .post(endpointSignUp, newUser)
         .then((response) => {
-          // Respuesta exitosa
           console.log("Registro exitoso: " + JSON.stringify(response));
           this.$q.notify({
             message: "Registro exitoso. Bienvenido a GreenCity APP",
@@ -128,11 +103,9 @@ export default {
             position: "bottom",
             timeout: 5000,
           });
-
           this.$router.push("/login");
         })
         .catch((error) => {
-          // Ocurrió un error en el registro
           this.$q.notify({
             message: "Ocurrió un error al registrarse",
             color: "negative",
@@ -143,14 +116,19 @@ export default {
         });
     },
     limpiarFormulario() {
-      // Restablecer todos los campos del formulario a valores vacíos
-      (this.Namevalue = ""),
-        (this.Emailvalue = ""),
-        (this.Passwordvalue = ""),
-        (this.Phonevalue = ""),
-        (this.Addressvalue = ""),
-        console.log("Formulario limpiado");
+      this.Namevalue = "";
+      this.Emailvalue = "";
+      this.Passwordvalue = "";
+      this.Phonevalue = "";
+      this.Addressvalue = "";
+      console.log("Formulario limpiado");
     },
   },
 };
 </script>
+
+<style scoped>
+.full-width {
+  width: 100%;
+}
+</style>
