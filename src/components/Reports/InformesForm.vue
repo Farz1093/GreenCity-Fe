@@ -29,6 +29,14 @@
         style="max-width: 250px"
         @click="exportarPdf"
       />
+      <q-btn
+        label="Ir a Reportes"
+        color="green"
+        unelevated
+        class="q-mb-sm"
+        style="max-width: 250px"
+        @click="irareportes"
+      />
     </div>
     <q-btn
       label="Limpiar filtros"
@@ -189,6 +197,9 @@ export default {
     },
     generarInforme() {
       this.$router.push("/informes/new");
+    },
+    irareportes() {
+      this.$router.push("/reports");
     },
     exportarExcel() {
       const worksheet = XLSX.utils.json_to_sheet(this.informesFiltrados);
