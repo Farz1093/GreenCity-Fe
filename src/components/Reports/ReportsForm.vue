@@ -14,7 +14,28 @@
         @click="irAPublicarReporte"
       />
     </div>
+    <!-- Botón para Administradores -->
+    <div v-if="esAdmin" class="text-center q-mb-md">
+      <q-card-section class="text-center q-pt-none">
+        <q-btn
+          label="Generar Informe"
+          color="green"
+          unelevated
+          class="q-mb-sm"
+          style="max-width: 250px"
+          @click="generarInforme"
+        />
 
+        <q-btn
+          label="Ver Informe"
+          color="green"
+          unelevated
+          class="q-mb-sm"
+          style="max-width: 250px"
+          @click="verInforme"
+        />
+      </q-card-section>
+    </div>
     <q-btn
       label="Limpiar filtros"
       color="secondary"
@@ -114,8 +135,9 @@ export default {
           format: (val) => new Date(val).toLocaleDateString(),
         },
         { name: "estado", label: "Estado", align: "left", field: "estado" },
-        { name: "acciones", label: "Acciones", align: "center" },
+        { name: "comentarios", label: "Comentarios", align: "center" },
       ],
+      esAdmin: false,
     };
   },
   watch: {
@@ -161,6 +183,12 @@ export default {
     irAPublicarReporte() {
       this.$router.push("/reports/new");
     },
+    generarInforme() {
+      this.$router.push("/informes/new");
+    },
+    verInforme() {
+      this.$router.push("/informes");
+    },
     verComentario(idReporte) {
       this.$router.push(`/reports/${idReporte}`);
     },
@@ -171,6 +199,8 @@ export default {
   },
   mounted() {
     this.fetchReportes();
+    const userRole = localStorage.getItem("userRole");
+    this.esAdmin = userRole === "ADM";
   },
 };
 </script>
