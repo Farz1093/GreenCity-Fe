@@ -111,6 +111,7 @@ export default {
           // Accede a los datos directamente desde response.data
           const token = response.data.token; // Correcto
           const userId = response.data.idUsuario; // Correcto
+          const userRole = response.data.tipoUsuario;
 
           // Valida que los campos existan
           if (!token || !userId) {
@@ -122,9 +123,11 @@ export default {
           // Guardar token e ID en localStorage
           localStorage.setItem("authToken", token);
           localStorage.setItem("userId", userId);
+          localStorage.setItem("userRole", userRole);
 
           console.log("Token guardado:", token);
           console.log("ID Usuario guardado:", userId);
+          console.log("Tipo Usuario guardado:", userRole);
 
           // Notificación y redirección
           this.$q.notify({
