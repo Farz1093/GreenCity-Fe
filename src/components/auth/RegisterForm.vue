@@ -1,52 +1,114 @@
 <template>
   <q-layout>
     <q-page-container>
-      <q-page class="flex flex-center q-pa-md" style="height: 100vh; background-color: #f5f5f5">
-        <q-card class="q-pa-lg rounded shadow-2" style="width: 100%; max-width: 500px">
+      <q-page
+        class="flex flex-center q-pa-md"
+        style="height: 100vh; background-color: #f5f5f5"
+      >
+        <q-card
+          class="q-pa-lg rounded shadow-2"
+          style="width: 100%; max-width: 500px"
+        >
           <!-- encabezado -->
           <q-card-section class="text-center">
             <q-avatar size="80px" class="bg-green text-white">
               <q-icon name="person_add" size="40px" />
             </q-avatar>
             <h4 class="q-mb-xs">Create an Account</h4>
-            <p class="text-subtitle2 text-grey">Join GreenCity and get started</p>
+            <p class="text-subtitle2 text-grey">
+              Join GreenCity and get started
+            </p>
           </q-card-section>
 
           <!-- formulario de registro -->
           <q-card-section>
             <q-form @submit="onSubmit" @reset="onReset" class="">
-              <q-input outlined v-model="Namevalue" label="Name*" lazy-rules :rules="[
-                (val) => (val && val.length > 0) || 'Please fill out this field'
-              ]" class="" />
+              <q-input
+                outlined
+                v-model="Namevalue"
+                label="Name*"
+                lazy-rules
+                :rules="[
+                  (val) =>
+                    (val && val.length > 0) || 'Please fill out this field',
+                ]"
+                class=""
+              />
 
-              <q-input outlined v-model="Emailvalue" label="Email*" lazy-rules :rules="[
-                (val) => (val && val.length > 0) || 'Please fill out this field',
-                (val) => {
-                  const emailPattern =
-                    /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-                  return (
-                    emailPattern.test(val) || 'Please enter a valid email'
-                  );
-                },
-              ]" class="" />
+              <q-input
+                outlined
+                v-model="Emailvalue"
+                label="Email*"
+                lazy-rules
+                :rules="[
+                  (val) =>
+                    (val && val.length > 0) || 'Please fill out this field',
+                  (val) => {
+                    const emailPattern =
+                      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+                    return (
+                      emailPattern.test(val) || 'Please enter a valid email'
+                    );
+                  },
+                ]"
+                class=""
+              />
 
-              <q-input outlined v-model="Passwordvalue" label="Password*" type="password" lazy-rules :rules="[
-                (val) => (val && val.length > 0) || 'Please fill out this field'
-              ]" class="" />
+              <q-input
+                outlined
+                v-model="Passwordvalue"
+                label="Password*"
+                type="password"
+                lazy-rules
+                :rules="[
+                  (val) =>
+                    (val && val.length > 0) || 'Please fill out this field',
+                ]"
+                class=""
+              />
 
-              <q-input outlined v-model="Phonevalue" label="Phone*" lazy-rules :rules="[
-                (val) => (val && val.length > 0) || 'Please fill out this field'
-              ]" class="" />
+              <q-input
+                outlined
+                v-model="Phonevalue"
+                label="Phone*"
+                lazy-rules
+                :rules="[
+                  (val) =>
+                    (val && val.length > 0) || 'Please fill out this field',
+                ]"
+                class=""
+              />
 
-              <q-input outlined v-model="Addressvalue" label="Address*" lazy-rules :rules="[
-                (val) => (val && val.length > 0) || 'Please fill out this field'
-              ]" class="" />
+              <q-input
+                outlined
+                v-model="Addressvalue"
+                label="Address*"
+                lazy-rules
+                :rules="[
+                  (val) =>
+                    (val && val.length > 0) || 'Please fill out this field',
+                ]"
+                class=""
+              />
 
               <!-- botones -->
               <div class="text-center">
-                <q-btn label="Register" type="submit" color="green" unelevated class="full-width q-mb-sm"
-                  @click="registroUsuario" />
-                <q-btn label="Clear" type="reset" color="grey" flat class="full-width" @click="limpiarFormulario" />
+                <q-btn
+                  label="Register"
+                  type="submit"
+                  color="green"
+                  unelevated
+                  class="full-width q-mb-sm"
+                  @click="registroUsuario"
+                />
+                <q-btn
+                  label="Clear"
+                  type="reset"
+                  color="grey"
+                  flat
+                  class="full-width"
+                  @click="limpiarFormulario"
+                />
               </div>
             </q-form>
           </q-card-section>
