@@ -3,7 +3,7 @@
     <!-- Título -->
     <h3 class="text-center text-bold text-green">GreenCity Informes</h3>
 
-    <!-- Botón para Administradores -->
+    <!-- Botones para Administradores -->
     <div v-if="esAdmin" class="text-center q-mb-md">
       <q-btn
         label="Generar Informe"
@@ -13,7 +13,30 @@
         style="max-width: 250px"
         @click="generarInforme"
       />
+      <q-btn
+        label="Exportar a Excel"
+        color="blue"
+        unelevated
+        class="q-mb-sm"
+        style="max-width: 250px"
+        @click="exportarExcel"
+      />
+      <q-btn
+        label="Exportar a PDF"
+        color="red"
+        unelevated
+        class="q-mb-sm"
+        style="max-width: 250px"
+        @click="exportarPdf"
+      />
     </div>
+    <q-btn
+      label="Limpiar filtros"
+      color="secondary"
+      flat
+      size="sm"
+      @click="limpiarFiltros"
+    />
 
     <!-- Buscar y Filtrar -->
     <q-card class="q-pa-md q-mb-md">
@@ -49,14 +72,16 @@
         :columns="columns"
         row-key="id_informe"
         no-data-label="No hay informes disponibles"
-      >
-        <!-- No se necesita plantilla para 'rutaArchivo', ya que se mostrará como texto directamente -->
-      </q-table>
+      />
     </q-card>
   </q-page>
 </template>
 
 <script>
+import * as XLSX from "xlsx";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
+
 export default {
   data() {
     return {
@@ -95,7 +120,7 @@ export default {
           field: "fechaGeneracion",
           format: (val) => {
             if (!val) return "Sin fecha";
-            const date = new Date(val); // Intenta convertir a Date
+            const date = new Date(val);
             return isNaN(date) ? "Fecha inválida" : date.toLocaleDateString();
           },
         },
@@ -158,8 +183,48 @@ export default {
         console.error("Error al obtener los informes:", error);
       }
     },
+    limpiarFiltros() {
+      this.searchTerm = "";
+      this.categoriaSeleccionada = null;
+    },
     generarInforme() {
       this.$router.push("/informes/new");
+    },
+    exportarExcel() {
+      const worksheet = XLSX.utils.json_to_sheet(this.informesFiltrados);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Informes");
+      XLSX.writeFile(workbook, "informes.xlsx");
+    },
+    exportarPdf() {
+      const doc = new jsPDF();
+      const columns = [
+        { header: "ID Informe", dataKey: "id_informe" },
+        { header: "Usuario", dataKey: "idUsuario" },
+        { header: "Tipo de Informe", dataKey: "tipoInforme" },
+        { header: "Fecha de Generación", dataKey: "fechaGeneracion" },
+        { header: "Ubicación", dataKey: "ubicacion" },
+        { header: "Categoría", dataKey: "categoria" },
+        { header: "Detallado", dataKey: "rutaArchivo" },
+      ];
+
+      const rows = this.informesFiltrados.map((informe) => ({
+        id_informe: informe.id_informe,
+        idUsuario: informe.idUsuario,
+        tipoInforme: informe.tipoInforme,
+        fechaGeneracion: new Date(informe.fechaGeneracion).toLocaleDateString(),
+        ubicacion: informe.ubicacion,
+        categoria: informe.categoria,
+        rutaArchivo: informe.rutaArchivo,
+      }));
+
+      doc.autoTable({
+        head: [columns.map((col) => col.header)],
+        body: rows.map((row) => Object.values(row)),
+        theme: "grid",
+      });
+
+      doc.save("informes.pdf");
     },
   },
   mounted() {
